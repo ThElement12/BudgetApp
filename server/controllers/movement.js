@@ -1,10 +1,10 @@
 const express = require('express');
-const mysqlConnection = require('../database');
+const mysqlConnection = require('../config/database');
 const router = express.Router();
 
 
 router.get('/movement/:id', (req, res) => {
-    //Get all budget by user
+    //Get all movement by user
 
     const { budget_id } = req.params;
 
@@ -22,11 +22,11 @@ router.get('/movement/:id', (req, res) => {
 });
 
 router.post('/movement', (req, res) => {
-  const { category, budget_id, movement_type, amount, date} = req.body;
+  const { category, budget_id, movement_type, currency_id, description, amount, date} = req.body;
 
-  const query = "INSERT INTO budget (category_id, budget_id, movement_type_id, amount, date) VALUES (?, ?, ?, ?, ?)"
+  const query = "INSERT INTO budget (category_id, budget_id, movement_type_id, currency_id, description, amount, date) VALUES (?, ?, ?, ?, ?)"
 
-  mysqlConnection.query(query, [category, budget_id, movement_type, amount, date], (err, rows) => {
+  mysqlConnection.query(query, [category, budget_id, movement_type, currency_id, description, amount, date], (err, rows) => {
     if(!err){
       res.json(rows);
     }else{

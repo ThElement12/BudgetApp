@@ -1,30 +1,30 @@
 const express = require('express');
-const mysqlConnection = require('../database');
+const mysqlConnection = require('../config/database');
 const router = express.Router();
 
 
 router.get('/user', (req, res) => {
-    //Get all users
-    const query = "SELECT * FROM user"
+  //Get all users
+  const query = "SELECT * FROM user"
 
-    mysqlConnection.query(query, (err, rows) => {
-      if(!err){
-        res.json(rows);
-      }else{
-        console.error(err);
-      }
-    });
+  mysqlConnection.query(query, (err, rows) => {
+    if (!err) {
+      res.json(rows);
+    } else {
+      console.error(err);
+    }
+  });
 
 });
-router.get('/user/:id', (req, res) => {
+router.get('/user/:email', (req, res) => {
   //Get specific user
-  const { id } = req.params;
-  const query = "SELECT * FROM user WHERE id = ?"
+  const { email } = req.params;
+  const query = "SELECT * FROM user WHERE email = ?"
 
-  mysqlConnection.query(query, [id], (err,rows) => {
-    if(!err){
+  mysqlConnection.query(query, [email], (err, rows) => {
+    if (!err) {
       res.json(rows);
-    }else{
+    } else {
       console.error(err);
     }
   });
@@ -32,13 +32,13 @@ router.get('/user/:id', (req, res) => {
 
 router.post('/user', (req, res) => {
   //Register user
-  const {name, email} = req.body;
+  const { name, email } = req.body;
   const query = "INSERT INTO user (name, email) VALUES (?, ?)"
 
   mysqlConnection.query(query, [name, email], (err, rows) => {
-    if(!err){
+    if (!err) {
 
-    }else{
+    } else {
       console.error(err);
     }
   })
