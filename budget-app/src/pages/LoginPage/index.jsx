@@ -3,7 +3,6 @@ import { Form, Button, Card, Alert } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-
 import UserService from '../../services/user.service'
 
 import "./LoginPage.css";
@@ -22,7 +21,8 @@ const LoginPage = () => {
   const authentication = () => {
 
     UserService.login(mail, pass)
-      .then(axios.get(process.env.REACT_APP_API_URL + '/user/' + mail)
+      .then(() => {
+        axios.get(process.env.REACT_APP_API_URL + '/user/' + mail)
           .then(res => res.data[0])
           .then(res => {
             for (var key in res) {
@@ -30,6 +30,7 @@ const LoginPage = () => {
             }
             navigate("/", { replace: true });
           })
+        }
       ).catch(() => {
         setmsgError('Correo o Contraseña incorrectos')
       });
