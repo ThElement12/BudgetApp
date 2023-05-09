@@ -17,7 +17,7 @@ router.get('/user', (req, res) => {
 
 });
 router.get('/user/:email', (req, res) => {
-  //Get specific user
+  //Get specific user id after logging 
   const { email } = req.params;
   const query = "SELECT * FROM user WHERE email = ?"
 

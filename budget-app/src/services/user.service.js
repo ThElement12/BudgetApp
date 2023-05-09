@@ -1,28 +1,24 @@
 import axios from "axios";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import app from "../services/firebaseConfig"
 
 class UserService {
-  registerUser(name, email, password) {
-    createUserWithEmailAndPassword(getAuth(),email, password)
-    .then(
-      axios.post(process.env.REACT_APP_API_URL + '/user', {name, email})
-      .then(res => res.json())
-      .then(res => console.log(res))
-      .catch(err => err)
-    )
-    .catch(err => err);
+  registerUser(name, email, password, onSuccess) {
+    const auth = getAuth(app);
+    return createUserWithEmailAndPassword(auth, email, password)
+      .then(() => {
+        axios.post(process.env.REACT_APP_API_URL + '/user', { name, email })
+        .then(() => onSuccess())
+      })
+    // .catch(err => err);
   }
 
   login(mail, pass) {
-    return signInWithEmailAndPassword(getAuth(),mail, pass)
-    .then(
-      axios.get(process.env.REACT_APP_API_URL + '/user' + mail)
-      .then(res => res.json())
-      .catch(err => err)
-    )
-    .catch(err => err);
+    const auth = getAuth(app);
+    return signInWithEmailAndPassword(auth, mail, pass)
+      // .catch(err => err);
   }
-  
+
   logout() {
     localStorage.clear();
   }

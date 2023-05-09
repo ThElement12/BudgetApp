@@ -9,7 +9,6 @@ import "./Register.css"
 
 import UserService from '../../services/user.service.js'
 
-
 const RegisterPage = () => {
   const [name, setName] = useState("");
   const [mail, setEmail] = useState("");
@@ -20,21 +19,18 @@ const RegisterPage = () => {
   const [modalSuccess, setModalSuccess] = useState(false);
   const navigate = useNavigate();
 
-
   const onSubmit = (event) => {
     event.preventDefault();
     if (password !== confirm) {
       setmsgError("Las contraseñas no coinciden");
-    }else{
+    } else {
       register();
-    }  
+    }
   }
   const register = async () => {
-    await UserService.registerUser(name, mail, password)
+    UserService.registerUser(name, mail, password, onSuccess)
       .then(onSuccess)
-      .catch(err => {
-        setmsgError("El correo ya existe");
-      })
+      .catch(() => setmsgError("El correo ya existe"));
   }
   const onSuccess = () => {
     setModalSuccess(true);
@@ -43,6 +39,13 @@ const RegisterPage = () => {
     setConfirm("");
     setmsgError("");
     setName("");
+  }
+  const checkPassLength = () => {
+    if(password.length >= 6 && confirm.length >= 6){
+      return false;
+    }else{
+      return true;
+    }
   }
   const hideModalSuccess = () => {
     setModalSuccess(false);
@@ -72,7 +75,7 @@ const RegisterPage = () => {
               </Form.Group>
               <br></br>
               {msgError !== "" && <Alert variant="danger">{msgError}</Alert>}
-              <Button className="w-100" type="submit">
+              <Button disabled={checkPassLength()} className="w-100" type="submit">
                 Registrar
               </Button>
             </Form>

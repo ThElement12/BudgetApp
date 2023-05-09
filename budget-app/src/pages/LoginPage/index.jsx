@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Form, Button, Card, Alert } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+
 
 import UserService from '../../services/user.service'
 
@@ -18,21 +20,18 @@ const LoginPage = () => {
     authentication();
   };
   const authentication = () => {
-    
+
     UserService.login(mail, pass)
-      .then(res => {
-        if(res.status_code !== 404){
-          for(var key in res){
-            localStorage.setItem(key, res[key])
-          }
-          navigate("/",  { replace: true });
-        }else{
-          setmsgError('Usuario/Correo o Contraseña incorrectos')
-        }
-      })
-      .catch(res => {
-        console.error(res)
-        setmsgError("Algo falló, intentelo mas tarde")
+      .then(axios.get(process.env.REACT_APP_API_URL + '/user/' + mail)
+          .then(res => res.data[0])
+          .then(res => {
+            for (var key in res) {
+              localStorage.setItem(key, res[key])
+            }
+            navigate("/", { replace: true });
+          })
+      ).catch(() => {
+        setmsgError('Correo o Contraseña incorrectos')
       });
   }
   return (
