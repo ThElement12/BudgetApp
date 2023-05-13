@@ -40,6 +40,7 @@ const RegisterPage = () => {
     setmsgError("");
     setName("");
   }
+
   const checkPassLength = () => {
     if(password.length >= 6 && confirm.length >= 6){
       return false;

@@ -9,7 +9,9 @@ router.get('/movement/:id', (req, res) => {
     const { budget_id } = req.params;
 
 
-    const query = "SELECT * FROM movement WHERE budget_id = ?"
+    const query = "SELECT movement.id as id, categoryName, movementName, currency_name, amount, description, date FROM movement JOIN category c on movement.category_id = c.id\n" +
+        "                        JOIN currency c2 on c2.id = movement.currency_id\n" +
+        "                        JOIN movement_type mt on movement.movement_type_id = mt.id WHERE budget_id = ?"
 
     mysqlConnection.query(query, [budget_id], (err, rows) => {
       if(!err){

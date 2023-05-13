@@ -1,4 +1,4 @@
-const mysql = require("mysql2");
+    const mysql = require("mysql2");
 require('dotenv').config();
 
 //Se obtiene la configuración de la base de datos desde el archivo .env
